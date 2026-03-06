@@ -13,6 +13,7 @@ model User {
   createdAt    DateTime @default(now())
 
   tasks        Task[]
+  history      TaskHistory[]
 }
 
 model Task {
@@ -20,6 +21,18 @@ model Task {
   title     String
   createdAt DateTime @default(now())
 
+  isDone    Boolean  @default(false)
+  doneAt    DateTime?
+
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
+}
+
+model TaskHistory {
+  id          Int      @id @default(autoincrement())
+  title       String
+  createdAt   DateTime
+  completedAt DateTime
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
 }
