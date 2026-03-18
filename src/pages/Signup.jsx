@@ -13,28 +13,57 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!email || !password) {
+            alert("Please fill in all fields");
+            return;
+        }
+
+        if (password.length < 8) {
+            alert("Password must be at least 8 characters");
+            return;
+        }
+
         try {
             setLoading(true);
 
-            const res = await fetch("http://localhost:5000/signup", {
+            const signupRes = await fetch("http://localhost:5000/auth/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({
+                    email: email.trim(),
+                    password: password.trim(),
+                }),
             });
 
-            const data = await res.json();
+            const signupData = await signupRes.json();
 
-            if (!res.ok) {
-                alert(data.error || "Signup failed");
+            if (!signupRes.ok) {
+                alert(signupData.error || "Signup failed");
                 return;
             }
 
-            alert("Account created successfully!");
-            setEmail("");
-            setPassword("");
-            navigate("/");
+            // Automatically login after signup
+            const loginRes = await fetch("http://localhost:5000/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    email: email.trim(),
+                    password: password.trim(),
+                }),
+            });
+
+            if (!loginRes.ok) {
+                alert("Login after signup failed");
+                return;
+            }
+
+            navigate("/main");
+
         } catch (err) {
             console.error("Network/server error:", err);
             alert("Could not reach server");

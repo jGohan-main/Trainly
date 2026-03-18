@@ -1,19 +1,21 @@
-import React from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Login from "./pages/Login"
 import FrontPage from "./pages/Front";
+import AppBackground from "./layouts/AppBackground";
 
 const App = () => {
     return (
         <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/main" element={<FrontPage />} />
-            </Routes>
+            <AppBackground>
+                <Routes>
+                    <Route path="/" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/main" element={<FrontPage />} />
+                </Routes>
+            </AppBackground>
         </BrowserRouter>
-    )
-}
+    );
+};
 
-export default App
+export default App;

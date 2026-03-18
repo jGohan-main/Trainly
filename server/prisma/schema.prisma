@@ -1,0 +1,77 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  tasks    Task[]
+  history  TaskHistory[]
+  accounts Account[]
+  exerciseDates ExerciseDate[]
+}
+
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime @default(now())
+
+  isDone Boolean   @default(false)
+  doneAt DateTime?
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model TaskHistory {
+  id        Int      @id @default(autoincrement())
+  title     String
+  createdAt DateTime
+  doneAt    DateTime
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Account {
+  id        Int      @id @default(autoincrement())
+  name      String
+  balance   Float    @default(0)
+  type      String?
+  createdAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model ExerciseDate {
+  id        Int      @id @default(autoincrement())
+  month     Int
+  year      Int
+  createdAt DateTime @default(now())
+
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  workouts  Workout[]
+
+  @@unique([userId, month, year])
+}
+
+model Workout {
+  id             Int          @id @default(autoincrement())
+  day            Int
+  workoutType    String
+  notes          String?
+  createdAt      DateTime     @default(now())
+
+  exerciseDateId Int
+  exerciseDate   ExerciseDate @relation(fields: [exerciseDateId], references: [id], onDelete: Cascade)
+}

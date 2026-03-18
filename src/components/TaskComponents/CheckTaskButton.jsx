@@ -11,6 +11,7 @@ export default function CheckTaskButton({ task, onToggled }) {
             const res = await fetch(`http://localhost:5000/tasks/${task.id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify({ isDone: !task.isDone }),
             });
 
