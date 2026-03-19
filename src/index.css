@@ -6,5 +6,12 @@ body,
 #root {
     min-height: 100%;
     margin: 0;
-    background: #000;
+    background: #f9fbff;
+    transition: background-color 0.3s ease;
+}
+
+html.dark,
+html.dark body,
+html.dark #root {
+    background: #09090b;
 }

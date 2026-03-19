@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, CheckSquare } from "lucide-react";
+import {
+    Mail,
+    Lock,
+    Eye,
+    EyeOff,
+    CheckSquare,
+    Sparkles,
+    ArrowRight,
+} from "lucide-react";
 
 const Signup = () => {
     const [email, setEmail] = useState("");
@@ -44,7 +52,6 @@ const Signup = () => {
                 return;
             }
 
-            // Automatically login after signup
             const loginRes = await fetch("http://localhost:5000/auth/login", {
                 method: "POST",
                 headers: {
@@ -63,7 +70,6 @@ const Signup = () => {
             }
 
             navigate("/main");
-
         } catch (err) {
             console.error("Network/server error:", err);
             alert("Could not reach server");
@@ -73,110 +79,141 @@ const Signup = () => {
     };
 
     return (
-        <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-zinc-100 px-4">
-            <div className="absolute left-[-120px] top-[-120px] h-80 w-80 rounded-full bg-zinc-300/40 blur-3xl" />
-            <div className="absolute bottom-[-140px] right-[-120px] h-96 w-96 rounded-full bg-zinc-400/20 blur-3xl" />
+        <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-zinc-950 via-zinc-900 to-black px-4 py-6">
+            <div className="pointer-events-none absolute inset-0">
+                <div className="absolute left-[-140px] top-[-140px] h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" />
+                <div className="absolute right-[-120px] top-[10%] h-96 w-96 rounded-full bg-violet-500/10 blur-3xl" />
+                <div className="absolute bottom-[-120px] left-[8%] h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl" />
+            </div>
 
-            <div className="relative w-full max-w-md rounded-[28px] border border-zinc-200/80 bg-white/90 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.10)] backdrop-blur">
-                <div className="mb-8 flex flex-col items-center text-center">
-                    <div className="mb-6 flex items-center gap-4">
-                        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-[0_10px_30px_rgba(0,0,0,0.18)]">
-                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-zinc-800 via-zinc-900 to-black" />
-                            <CheckSquare
-                                size={24}
-                                strokeWidth={2.3}
-                                className="relative z-10"
-                            />
+            <div className="relative w-full max-w-[540px] overflow-hidden rounded-[34px] border border-white/10 bg-white/5 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:p-7">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_28%),linear-gradient(to_bottom,rgba(255,255,255,0.03),transparent_36%)]" />
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-400/40 to-transparent" />
+                <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-sky-400/10 blur-3xl" />
+
+                <div className="relative">
+                    <div className="mb-5 flex items-start justify-between gap-4">
+                        <div className="flex items-center gap-4">
+                            <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-[1.35rem] text-white shadow-[0_14px_34px_rgba(0,0,0,0.35)]">
+                                <div className="absolute inset-0 rounded-[1.35rem] bg-gradient-to-br from-sky-500 via-blue-600 to-violet-600" />
+                                <div className="absolute inset-[1px] rounded-[1.28rem] bg-gradient-to-br from-white/15 to-transparent" />
+                                <CheckSquare
+                                    size={23}
+                                    strokeWidth={2.3}
+                                    className="relative z-10"
+                                />
+                            </div>
+
+                            <div className="min-w-0">
+                                <p className="text-[1.85rem] font-semibold leading-none tracking-[-0.08em] text-white">
+                                    Trackly
+                                </p>
+                                <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-zinc-400">
+                                    Journal • Tasks • History
+                                </p>
+                            </div>
                         </div>
 
-                        <div className="flex flex-col text-left leading-tight">
-                            <span className="text-3xl font-semibold tracking-[-0.06em] text-zinc-900">
-                                Trackly
-                            </span>
-                            <span className="text-[11px] font-medium uppercase tracking-[0.24em] text-zinc-400">
-                                Journal • Tasks • History
-                            </span>
+                        <div className="inline-flex shrink-0 items-center gap-2 rounded-full border border-sky-400/20 bg-sky-500/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-sky-300 shadow-sm">
+                            <Sparkles size={11} />
+                            Premium
                         </div>
                     </div>
 
-                    <h1 className="text-2xl font-semibold text-zinc-900">
-                        Create account
-                    </h1>
+                    <div className="mb-6">
+                        <h1 className="text-[2rem] font-semibold leading-[1] tracking-[-0.07em] text-white">
+                            Create account
+                        </h1>
+                        <p className="mt-2 max-w-md text-sm leading-6 text-zinc-400">
+                            Start your personal workspace with goals, routines, task
+                            tracking, and a clean place to organize everything.
+                        </p>
+                    </div>
 
-                    <p className="mt-2 max-w-xs text-sm leading-relaxed text-zinc-500">
-                        Start organizing your life with Trackly
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="grid gap-4">
+                            <div>
+                                <label className="mb-2 block text-[13px] font-medium text-zinc-300">
+                                    Email
+                                </label>
+
+                                <div className="group flex items-center rounded-[1.15rem] border border-white/10 bg-white/5 px-4 shadow-[0_8px_24px_rgba(0,0,0,0.2)] transition-all duration-200 focus-within:border-sky-400/40 focus-within:bg-white/8 focus-within:ring-4 focus-within:ring-sky-500/10">
+                                    <Mail
+                                        size={18}
+                                        className="text-zinc-500 transition group-focus-within:text-sky-400"
+                                    />
+                                    <input
+                                        type="email"
+                                        placeholder="Enter your email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full bg-transparent px-3 py-3.5 text-sm text-white placeholder:text-zinc-500 outline-none"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="mb-2 block text-[13px] font-medium text-zinc-300">
+                                    Password
+                                </label>
+
+                                <div className="group flex items-center rounded-[1.15rem] border border-white/10 bg-white/5 px-4 shadow-[0_8px_24px_rgba(0,0,0,0.2)] transition-all duration-200 focus-within:border-sky-400/40 focus-within:bg-white/8 focus-within:ring-4 focus-within:ring-sky-500/10">
+                                    <Lock
+                                        size={18}
+                                        className="text-zinc-500 transition group-focus-within:text-sky-400"
+                                    />
+                                    <input
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Create a password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className="w-full bg-transparent px-3 py-3.5 text-sm text-white placeholder:text-zinc-500 outline-none"
+                                    />
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword((prev) => !prev)}
+                                        className="text-zinc-500 transition hover:text-zinc-300"
+                                    >
+                                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="group mt-2 flex w-full items-center justify-center gap-2 rounded-[1.15rem] bg-gradient-to-r from-sky-500 via-blue-600 to-violet-600 py-3.5 text-sm font-semibold text-white shadow-[0_16px_34px_rgba(0,0,0,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_22px_42px_rgba(0,0,0,0.42)] disabled:cursor-not-allowed disabled:opacity-70"
+                        >
+                            <span>{loading ? "Creating account..." : "Create account"}</span>
+                            {!loading && (
+                                <ArrowRight
+                                    size={16}
+                                    className="transition-transform duration-200 group-hover:translate-x-0.5"
+                                />
+                            )}
+                        </button>
+                    </form>
+
+                    <div className="my-5 flex items-center gap-3">
+                        <div className="h-px flex-1 bg-gradient-to-r from-transparent to-white/10" />
+                        <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-zinc-500">
+                            Get started
+                        </span>
+                        <div className="h-px flex-1 bg-gradient-to-l from-transparent to-white/10" />
+                    </div>
+
+                    <p className="text-center text-sm text-zinc-400">
+                        Already have an account?{" "}
+                        <span
+                            onClick={() => navigate("/")}
+                            className="cursor-pointer font-semibold text-white transition hover:text-sky-400 hover:underline"
+                        >
+                            Sign in
+                        </span>
                     </p>
                 </div>
-
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                        <label className="mb-2 block text-sm font-medium text-zinc-700">
-                            Email
-                        </label>
-
-                        <div className="flex items-center rounded-xl border border-zinc-300 bg-white px-3 transition duration-200 focus-within:border-zinc-900 focus-within:ring-4 focus-within:ring-zinc-200/70">
-                            <Mail size={18} className="text-zinc-400" />
-                            <input
-                                type="email"
-                                placeholder="Enter your email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full bg-transparent px-3 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none"
-                            />
-                        </div>
-                    </div>
-
-                    <div>
-                        <label className="mb-2 block text-sm font-medium text-zinc-700">
-                            Password
-                        </label>
-
-                        <div className="flex items-center rounded-xl border border-zinc-300 bg-white px-3 transition duration-200 focus-within:border-zinc-900 focus-within:ring-4 focus-within:ring-zinc-200/70">
-                            <Lock size={18} className="text-zinc-400" />
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Create a password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-transparent px-3 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none"
-                            />
-
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword((prev) => !prev)}
-                                className="text-zinc-400 transition hover:text-zinc-700"
-                            >
-                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                            </button>
-                        </div>
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full rounded-xl bg-zinc-900 py-3 text-sm font-semibold text-white shadow-md transition duration-200 hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-70"
-                    >
-                        {loading ? "Creating account..." : "Create account"}
-                    </button>
-                </form>
-
-                <div className="my-6 flex items-center gap-3">
-                    <div className="h-px flex-1 bg-zinc-200" />
-                    <span className="text-[11px] font-medium uppercase tracking-[0.24em] text-zinc-400">
-                        Get started
-                    </span>
-                    <div className="h-px flex-1 bg-zinc-200" />
-                </div>
-
-                <p className="text-center text-sm text-zinc-500">
-                    Already have an account?{" "}
-                    <span
-                        onClick={() => navigate("/")}
-                        className="cursor-pointer font-semibold text-zinc-900 transition hover:underline"
-                    >
-                        Sign in
-                    </span>
-                </p>
             </div>
         </div>
     );

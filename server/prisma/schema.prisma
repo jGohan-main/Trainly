@@ -7,14 +7,15 @@ generator client {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique
-  passwordHash String
-  createdAt    DateTime @default(now())
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  username      String?        @unique
+  passwordHash  String?
+  createdAt     DateTime       @default(now())
 
-  tasks    Task[]
-  history  TaskHistory[]
-  accounts Account[]
+  tasks         Task[]
+  history       TaskHistory[]
+  accounts      Account[]
   exerciseDates ExerciseDate[]
 }
 
@@ -57,10 +58,10 @@ model ExerciseDate {
   year      Int
   createdAt DateTime @default(now())
 
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
 
-  workouts  Workout[]
+  workouts Workout[]
 
   @@unique([userId, month, year])
 }

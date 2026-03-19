@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
-import { applyTheme, getInitialTheme } from "../theme";
+import { applyTheme, getInitialTheme } from "../layouts/theme";
 
 function ThemeToggle() {
     const [theme, setTheme] = useState("light");
 
     useEffect(() => {
-        setTheme(getInitialTheme());
+        const initialTheme = getInitialTheme();
+        setTheme(initialTheme);
+        applyTheme(initialTheme);
     }, []);
 
     const toggleTheme = () => {

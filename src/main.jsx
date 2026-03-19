@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import { applyTheme, getInitialTheme } from "./theme";
+import { applyTheme, getInitialTheme } from "./layouts/theme";
 
 applyTheme(getInitialTheme());
 

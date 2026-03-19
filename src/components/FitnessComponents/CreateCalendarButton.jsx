@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { CalendarPlus, X } from "lucide-react";
+import { createPortal } from "react-dom";
+import {
+    CalendarPlus,
+    X,
+    Sparkles,
+    ArrowRight,
+    Dumbbell,
+} from "lucide-react";
 
 function CreateExerciseMonthButton({ onCreated }) {
     const now = new Date();
@@ -64,99 +71,155 @@ function CreateExerciseMonthButton({ onCreated }) {
         }
     };
 
-    return (
-        <>
-            <button
-                type="button"
-                onClick={() => setOpen(true)}
-                className="flex items-center gap-2 rounded-xl bg-zinc-900 px-4 py-3 text-sm font-medium text-white transition hover:bg-zinc-800"
-            >
-                <CalendarPlus size={18} />
-                <span>Add Workout Month</span>
-            </button>
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            handleCreate();
+        }
 
-            {open && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-                    <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
-                        <div className="mb-5 flex items-start justify-between">
-                            <div>
-                                <h2 className="text-xl font-semibold text-zinc-900">
-                                    Create Workout Month
-                                </h2>
-                                <p className="mt-1 text-sm text-zinc-500">
-                                    Enter the month and year you want to track.
-                                </p>
+        if (e.key === "Escape") {
+            closeModal();
+        }
+    };
+
+    const modal = open ? (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
+            <div className="relative w-full max-w-md rounded-[2rem] border border-zinc-200 bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.22)] md:p-7 dark:border-white/10 dark:bg-zinc-900 dark:shadow-[0_24px_80px_rgba(0,0,0,0.50)]">
+                {/* decorative glow */}
+                <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-purple-200/40 blur-3xl dark:bg-purple-500/20" />
+                <div className="pointer-events-none absolute left-[-40px] bottom-[-20px] h-28 w-28 rounded-full bg-fuchsia-200/35 blur-3xl dark:bg-fuchsia-500/15" />
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-400/70 to-transparent dark:via-purple-400/30" />
+
+                <div className="relative">
+                    {/* HEADER */}
+                    <div className="mb-5 flex items-start justify-between gap-4">
+                        <div className="flex items-start gap-4">
+                            <div className="relative flex h-12 w-12 items-center justify-center rounded-[1rem] text-white shadow-[0_16px_34px_rgba(168,85,247,0.30)]">
+                                <div className="absolute inset-0 rounded-[1rem] bg-gradient-to-br from-purple-600 via-fuchsia-600 to-purple-700" />
+                                <div className="absolute inset-[1px] rounded-[0.92rem] bg-gradient-to-br from-white/20 to-transparent" />
+                                <Dumbbell size={20} className="relative z-10" />
                             </div>
 
-                            <button
-                                type="button"
-                                onClick={closeModal}
-                                className="rounded-lg p-2 text-zinc-500 transition hover:bg-zinc-100 hover:text-zinc-900"
-                            >
-                                <X size={18} />
-                            </button>
+                            <div>
+                                <div className="inline-flex items-center gap-2 rounded-full border border-purple-100 bg-purple-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-purple-700 shadow-sm dark:border-purple-400/20 dark:bg-purple-500/10 dark:text-purple-200">
+                                    <Sparkles size={12} />
+                                    New Entry
+                                </div>
+
+                                <h2 className="mt-3 text-xl font-semibold tracking-[-0.03em] text-zinc-950 dark:text-white">
+                                    Create workout month
+                                </h2>
+
+                                <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                                    Add a new month to track your workouts.
+                                </p>
+                            </div>
                         </div>
 
-                        <div className="space-y-4">
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-zinc-700">
-                                    Month
-                                </label>
+                        <button
+                            type="button"
+                            onClick={closeModal}
+                            className="flex h-10 w-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white text-zinc-500 shadow-sm transition hover:bg-zinc-50 hover:text-zinc-900 dark:border-white/10 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white"
+                        >
+                            <X size={18} />
+                        </button>
+                    </div>
+
+                    {/* INPUTS */}
+                    <div className="space-y-4">
+                        <div>
+                            <label className="mb-2 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                                Month
+                            </label>
+
+                            <div className="flex items-center rounded-[1.15rem] border border-zinc-200 bg-white px-4 shadow-[0_8px_24px_rgba(15,23,42,0.05)] transition focus-within:border-purple-300 focus-within:ring-4 focus-within:ring-purple-100 dark:border-white/10 dark:bg-zinc-800 dark:focus-within:border-purple-400/30 dark:focus-within:ring-purple-500/10">
                                 <input
+                                    autoFocus
                                     type="number"
                                     min="1"
                                     max="12"
                                     value={month}
                                     onChange={(e) => setMonth(e.target.value)}
-                                    className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-sm outline-none transition focus:border-zinc-900"
+                                    onKeyDown={handleKeyDown}
                                     placeholder="Enter month (1-12)"
+                                    className="w-full bg-transparent py-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none dark:text-white dark:placeholder:text-zinc-500"
                                 />
                             </div>
+                        </div>
 
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-zinc-700">
-                                    Year
-                                </label>
+                        <div>
+                            <label className="mb-2 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                                Year
+                            </label>
+
+                            <div className="flex items-center rounded-[1.15rem] border border-zinc-200 bg-white px-4 shadow-[0_8px_24px_rgba(15,23,42,0.05)] transition focus-within:border-purple-300 focus-within:ring-4 focus-within:ring-purple-100 dark:border-white/10 dark:bg-zinc-800 dark:focus-within:border-purple-400/30 dark:focus-within:ring-purple-500/10">
                                 <input
                                     type="number"
                                     min="2000"
                                     max="2100"
                                     value={year}
                                     onChange={(e) => setYear(e.target.value)}
-                                    className="w-full rounded-xl border border-zinc-300 px-4 py-3 text-sm outline-none transition focus:border-zinc-900"
+                                    onKeyDown={handleKeyDown}
                                     placeholder="Enter year"
+                                    className="w-full bg-transparent py-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none dark:text-white dark:placeholder:text-zinc-500"
                                 />
                             </div>
+                        </div>
 
-                            {error && (
-                                <p className="text-sm text-red-600">
-                                    {error}
-                                </p>
-                            )}
-
-                            <div className="flex justify-end gap-3 pt-2">
-                                <button
-                                    type="button"
-                                    onClick={closeModal}
-                                    disabled={loading}
-                                    className="rounded-xl border border-zinc-300 px-4 py-3 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 disabled:opacity-60"
-                                >
-                                    Cancel
-                                </button>
-
-                                <button
-                                    type="button"
-                                    onClick={handleCreate}
-                                    disabled={loading}
-                                    className="rounded-xl bg-zinc-900 px-4 py-3 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:opacity-60"
-                                >
-                                    {loading ? "Creating..." : "Create"}
-                                </button>
+                        {error && (
+                            <div className="rounded-[1rem] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300">
+                                {error}
                             </div>
+                        )}
+
+                        {/* ACTIONS */}
+                        <div className="flex justify-end gap-3 pt-1">
+                            <button
+                                type="button"
+                                onClick={closeModal}
+                                disabled={loading}
+                                className="rounded-[1rem] border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50 disabled:opacity-60 dark:border-white/10 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={handleCreate}
+                                disabled={loading}
+                                className="group inline-flex items-center gap-2 rounded-[1rem] bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(168,85,247,0.25)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_45px_rgba(168,85,247,0.35)] disabled:opacity-60"
+                            >
+                                <span>{loading ? "Creating..." : "Create Month"}</span>
+
+                                {!loading && (
+                                    <ArrowRight
+                                        size={15}
+                                        className="transition-transform duration-200 group-hover:translate-x-0.5"
+                                    />
+                                )}
+                            </button>
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
+        </div>
+    ) : null;
+
+    return (
+        <>
+            <button
+                type="button"
+                onClick={() => setOpen(true)}
+                className="group inline-flex items-center gap-2 rounded-[1.1rem] bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-700 px-4 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(168,85,247,0.25)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_20px_45px_rgba(168,85,247,0.35)]"
+            >
+                <CalendarPlus
+                    size={18}
+                    className="transition-transform duration-200 group-hover:rotate-90"
+                />
+                <span>Add Workout Month</span>
+            </button>
+
+            {typeof document !== "undefined" && createPortal(modal, document.body)}
         </>
     );
 }
